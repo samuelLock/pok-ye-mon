@@ -1,0 +1,40 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@1.0.0
+
+jobs:
+  build-and-test:
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |  # use pipenv to install dependencies
+            sudo pip install pipenv
+            pipenv install
+      - run:
+          name: Run Unit Test
+          command: pipenv run pytest ./test_hello_world.py
+
+  build-and-push-docker-image-to-ecr:
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout
+      - setup_remote_docker
+      - aws-cli/install
+      - aws-cli/setup
+      - run:
+          name: Build Docker Image
+          command: docker build -t poke-ye-mon-api .
+      - run:
+          name: Push Image to ecr
+          command: uri=$(aws ecr describe-repositories | jq -r '.repositories[0].repositoryUri') && docker tag poke-ye-mon-api $uri && docker push $uri
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
+      - build-and-push-docker-image-to-ecr
