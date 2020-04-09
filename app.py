@@ -71,6 +71,6 @@ def name(name):
             print(e)
             return ("Bad Gateway (Pokemon API)",502)
 
-    description = replaceUnwantedCharacters(json.dumps(description), (("\\n"," "), ("\\f"," "), ("\\u00e9","e")))
+    description = replaceUnwantedCharacters(description, (("\\n"," "), ("\\f"," "), ("\\u00e9","e")))
     translatedDescription = translateDescription(description)
-    return translatedDescription
+    return {"name":name, "description":str(translatedDescription)}
