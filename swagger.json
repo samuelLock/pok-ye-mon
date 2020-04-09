@@ -1,0 +1,59 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Returns the shakespearean translation of a given Pokemon's description from Pokemon Yellow",
+    "version" : "1.0",
+    "title" : "pok-ye-mon-api"
+  },
+  "host" : "pok-y-Publi-1H20R9VWL3VMO-1938541366.eu-west-1.elb.amazonaws.com",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/pokemon/{pokemonName}" : {
+      "get" : {
+        "summary" : "Returns the shakespearean translation of a given Pokemon's description from Pokemon Yellow",
+        "parameters" : [ {
+          "name" : "pokemonName",
+          "in" : "path",
+          "description" : "Name of a first generation pokemon",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A pokemon's description translated into shakespearean english",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
+            }
+          },
+          "404" : {
+            "description" : "Pokemon description was not found. Like the pokemon does not exist or does not exist in Pokemon Yellow's Pokedex."
+          },
+          "500" : {
+            "description" : "Unexplained error within the API's server."
+          },
+          "502" : {
+            "description" : "Response from either the Pokemon or Shakespeare API were not of the expected form."
+          },
+          "503" : {
+            "description" : "Unexpected service outage."
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "inline_response_200" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Charizard"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "A large dragon"
+        }
+      }
+    }
+  }
+}
