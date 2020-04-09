@@ -31,7 +31,7 @@ jobs:
           command: docker build -t pok-ye-mon .
       - run:
           name: Push Image to ecr
-          command: uri=$(aws ecr describe-repositories | jq -r '.repositories[0].repositoryUri') && docker tag pok-ye-mon-api $uri && docker push $uri
+          command: uri=$(aws ecr describe-repositories | jq -r '.repositories[0].repositoryUri') && docker tag pok-ye-mon $uri && docker push $uri
 
 workflows:
   main:
